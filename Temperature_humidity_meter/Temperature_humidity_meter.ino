@@ -112,7 +112,7 @@ void loop() {
 
 // Heat index
   display.println("Hissedilen:");
-  display.println(hic);           //Default is Celsius if you chance to fahrenheit, change "hic" to "hif"
+  display.println(hic);           // Default is Celsius. For fahrenheit, change "hic" value to "hif".
   display.println();
 
 // Text
