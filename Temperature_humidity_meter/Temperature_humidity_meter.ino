@@ -31,10 +31,10 @@ web: http://www.RinkyDinkElectronics.com/
   #include <SPI.h>
   #include <Adafruit_PCD8544.h>
   #include <Adafruit_Sensor.h>
-  #include <DHT.h>;
+  #include <DHT.h>
 
 //Constants
-  #define DHTPIN 7     // what pin we're connected to
+  #define DHTPIN 2     //DHT sensor (data) pin 
   #define DHTTYPE DHT22   // DHT 22  (AM2302)
   #define NUMFLAKES 10
   #define XPOS 0
@@ -48,7 +48,14 @@ web: http://www.RinkyDinkElectronics.com/
   float hum;  //Stores humidity value
   float temp; //Stores temperature value
 
-Adafruit_PCD8544 display = Adafruit_PCD8544(8, 9, 10, 12, 11);
+// Software SPI (slower updates, more flexible pin options):
+// pin 7 - Serial clock out (SCLK)
+// pin 6 - Serial data out (DIN)
+// pin 5 - Data/Command select (D/C)
+// pin 4 - LCD chip select (CS)
+// pin 3 - LCD reset (RST)
+Adafruit_PCD8544 display = Adafruit_PCD8544(7, 6, 5, 4, 3); // RST-3, CE-4, D0-5, DIN-6, CLK-7
+
 DHT dht(DHTPIN, DHTTYPE); //// Initialize DHT sensor for normal 16mhz Arduino
 
 void setup()   {
@@ -58,7 +65,6 @@ void setup()   {
   display.setContrast(50);      // you can change the contrast around to adapt the display for the best viewing!
   display.display();            // show splashscreen
   display.clearDisplay();       // clears the screen and buffer
-
 }
 
 void loop() {
@@ -69,12 +75,28 @@ void loop() {
   //Read data and store it to variables hum and temp
   hum = dht.readHumidity();
   temp= dht.readTemperature();
-  //Print temp and humidity values to serial monitor
+
+
+// Heat index compute and set variable section
+  float h = dht.readHumidity();
+  // Read temperature as Celsius (the default)
+  float t = dht.readTemperature();
+  // Read temperature as Fahrenheit (isFahrenheit = true)
+  float f = dht.readTemperature(true);
+  
+  // Compute heat index in Fahrenheit (the default)
+  float hif = dht.computeHeatIndex(f, h);
+  // Compute heat index in Celsius (isFahreheit = false)
+  float hic = dht.computeHeatIndex(t, h, false);
+  
+//Print temp and humidity values to serial monitor
   Serial.print("Humidity: ");
   Serial.print(hum);
   Serial.print(" %, Temp: ");
   Serial.print(temp);
-  Serial.println(" Celsius");
+  Serial.print(" Celsius, ");
+  Serial.print("Heat index: ");
+  Serial.println(hic);
   delay(10000); //Delay
 
 // Temp
@@ -87,7 +109,13 @@ void loop() {
 //Humid
   display.print("NEM     :");
   display.println(hum);
+
+// Heat index
+  display.println("Hissedilen:");
+  display.println(hic);           //Default is Celsius if you chance to fahrenheit, change "hic" to "hif"
   display.println();
+
+// Text
   display.print("OKTAY MERCAN");
-  display.display();
+  display.display();      // This code is neccecary don't delete, otherwise your secren stuck on logo
 }
