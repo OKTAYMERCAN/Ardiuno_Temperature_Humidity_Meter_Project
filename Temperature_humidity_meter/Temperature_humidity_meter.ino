@@ -28,6 +28,7 @@ web: http://www.RinkyDinkElectronics.com/
 // This program requires Nokia 5110 LCD module and DHT22(AM2302) Sensor.
 
 // Clock varaibles
+// 12:59:59 style clock
 int S=5;
 int m=32;
 int s=0;
