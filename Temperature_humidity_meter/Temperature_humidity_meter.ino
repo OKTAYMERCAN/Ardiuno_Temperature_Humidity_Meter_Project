@@ -21,9 +21,11 @@ Copyright (C)2015 Rinky-Dink Electronics, Henning Karlsen. All right reserved
 web: http://www.RinkyDinkElectronics.com/
 *********************************************************************/
 
-//-------------------------------------
-//|Combined and edited by OKTAY MERCAN|
-//-------------------------------------
+/*
+ -------------------------------------
+ |Combined and edited by OKTAY MERCAN|
+ -------------------------------------
+*/
 
 // This program requires Nokia 5110 LCD module and DHT22(AM2302) Sensor.
 
