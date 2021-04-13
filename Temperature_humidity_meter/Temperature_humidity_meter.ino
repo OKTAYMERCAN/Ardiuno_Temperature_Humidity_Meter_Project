@@ -30,9 +30,9 @@ web: http://www.RinkyDinkElectronics.com/
 // This program requires Nokia 5110 LCD module and DHT22(AM2302) Sensor.
 
 // Clock varaibles
-// 12:59:59 style clock
-int S=5;
-int m=32;
+// 23:59:59 - H/M/S style clock
+int o=5;
+int m=41;
 int s=0;
 
 //Library
@@ -64,10 +64,10 @@ int s=0;
 // pin 3 - LCD reset (RST)
 Adafruit_PCD8544 display = Adafruit_PCD8544(7, 6, 5, 4, 3); // RST-3, CE-4, D0-5, DIN-6, CLK-7
 
-DHT dht(DHTPIN, DHTTYPE); //// Initialize DHT sensor for normal 16mhz Arduino
+DHT dht(DHTPIN, DHTTYPE);       // Initialize DHT sensor for normal 16mhz Arduino
 
 void setup()   {
-//  Serial.begin(9600); // For serial data output
+  Serial.begin(9600);           // For serial data output
   dht.begin();
   display.begin();              // init done
   display.setContrast(50);      // you can change the contrast around to adapt the display for the best viewing!
@@ -90,7 +90,6 @@ void loop() {
   digitalWrite(10, HIGH);
   digitalWrite(11, LOW);
   digitalWrite(12, LOW);
-  digitalWrite(13, HIGH);
   
 //DHT22 (AM2302) Sensor code
   //Read data and store it to variables hum and temp
@@ -146,17 +145,17 @@ if(s >= 60){
  
 if(m >= 60){
   m = 0;
-  h = h + 1;
+  o = o + 1;
 }
- 
-if(h >= 12){
-  h = 1;
+
+if(o >= 24) {
+  o = 0;
 }
 
 // Clock display
   display.println();
   display.print("Saat: ");
-  display.print(S);
+  display.print(o);
   display.print(":");
   display.print(m);
   display.print(":");
@@ -165,7 +164,7 @@ if(h >= 12){
   
 // Serial write clock
   Serial.print("Saat: ");
-  Serial.print(S);
+  Serial.print(o);
   Serial.print(":");
   Serial.print(m);
   Serial.print(":");
