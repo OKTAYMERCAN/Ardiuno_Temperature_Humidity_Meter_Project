@@ -31,3 +31,6 @@ Known problems
 - Not synchronize to real time. (No *RTC module, so this way is not be expect perfect.)
 
 *RTC Module: Real time clock module
+
+---
+Copyright (c) 2026 Oktay Mercan https://github.com/OKTAYMERCAN/Ardiuno_Temperature_Humidity_Meter_Project
